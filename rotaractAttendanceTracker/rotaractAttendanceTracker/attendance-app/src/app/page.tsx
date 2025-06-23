@@ -202,12 +202,12 @@ export default function QRScannerPage() {
 
 
 
-            {scanResult && (
-              <Card className="bg-green-50 text-center p-3 border border-green-500 mt-4">
-                <p className="text-green-800 font-semibold">{scanResult}</p>
-              </Card>
-            )}
-          </Card>
+            {/* {scanResult && ( */}
+              {/* <Card className="bg-green-50 text-center p-3 border border-green-500 mt-4"> */}
+                {/* <p className="text-green-800 font-semibold">{scanResult}</p> */}
+              {/* </Card> */}
+            {/* )} */}
+          {/* </Card> */}
         </div>
       </main>
 
