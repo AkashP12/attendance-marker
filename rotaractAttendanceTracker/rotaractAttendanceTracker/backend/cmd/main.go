@@ -43,9 +43,17 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	r.POST("api/markAttendance", MarkAttendance)
+	// r.POST("api/markAttendance", MarkAttendance)
+
+	// r.Run(":8080")
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Backend is up and running 🚀"})
+	})
+
+	r.POST("/api/markAttendance", MarkAttendance)
 
 	r.Run(":8080")
+
 }
 
 func InitializeDbConnection() error {
