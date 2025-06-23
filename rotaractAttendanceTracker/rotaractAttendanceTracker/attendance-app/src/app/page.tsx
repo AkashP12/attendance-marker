@@ -32,7 +32,7 @@ export default function QRScannerPage() {
     listCameras,
     startCameraScan,
     stopCameraScan,
-    scanFile,
+    //scanFile,
     isScanning,
   } = useHtml5Qrcode({
     elementId: 'qr-reader',
