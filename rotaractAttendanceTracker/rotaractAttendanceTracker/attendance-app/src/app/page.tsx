@@ -207,7 +207,7 @@ export default function QRScannerPage() {
                 {/* <p className="text-green-800 font-semibold">{scanResult}</p> */}
               {/* </Card> */}
             {/* )} */}
-          {/* </Card> */}
+          </Card> 
         </div>
       </main>
 
