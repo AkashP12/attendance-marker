@@ -24,8 +24,8 @@ const sessionOptions = [
 
 export default function QRScannerPage() {
   const [selectedSession, setSelectedSession] = useState('Day 1 First Session');
-  const [scanResult, setScanResult] = useState<string | null>(null);
-  const [devices, setDevices] = useState<CameraDevice[]>([]);
+  //const [scanResult, setScanResult] = useState<string | null>(null);
+  const [, setDevices] = useState<CameraDevice[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
 
   const {
@@ -124,22 +124,22 @@ export default function QRScannerPage() {
 
 
 
-  const handleUploadQR = () => {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = async () => {
-      if (fileInput.files?.[0]) {
-        try {
-          const result = await scanFile(fileInput.files[0]);
-          // setScanResult(`Welcome Rtr. ${result} for ${selectedSession}`);
-        } catch (err) {
-          alert('QR scan failed: ' + err);
-        }
-      }
-    };
-    fileInput.click();
-  };
+  // const handleUploadQR = () => {
+  //   const fileInput = document.createElement('input');
+  //   fileInput.type = 'file';
+  //   fileInput.accept = 'image/*';
+  //   fileInput.onchange = async () => {
+  //     if (fileInput.files?.[0]) {
+  //       try {
+  //         const result = await scanFile(fileInput.files[0]);
+  //         // setScanResult(`Welcome Rtr. ${result} for ${selectedSession}`);
+  //       } catch (err) {
+  //         alert('QR scan failed: ' + err);
+  //       }
+  //     }
+  //   };
+  //   fileInput.click();
+  // };
 
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
