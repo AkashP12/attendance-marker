@@ -29,16 +29,6 @@ export function useQRCodeScanner({ onScan, onError, scannerRef }: QRCodeScannerP
 		}
 	}, []);
 
-	const getCameraId = useCallback(async () => {
-		try {
-			const devices = await Html5Qrcode.getCameras();
-			return devices?.[0]?.id || null;
-		} catch (err) {
-			console.error("Error getting cameras:", err);
-			return null;
-		}
-	}, []);
-
 	const startScanning = useCallback(async () => {
 		try {
 			const containerElement = scannerRef.current;
@@ -79,9 +69,17 @@ export function useQRCodeScanner({ onScan, onError, scannerRef }: QRCodeScannerP
 			console.error("Failed to start QR scanner:", error);
 			onError(error instanceof Error ? error : new Error(String(error)));
 		}
-	}, [onScan, onError, scannerRef, stopScanning, getCameraId]);
+	}, [onScan, onError, scannerRef, stopScanning]);
 
-	
+	const getCameraId = useCallback(async () => {
+		try {
+			const devices = await Html5Qrcode.getCameras();
+			return devices?.[0]?.id || null;
+		} catch (err) {
+			console.error("Error getting cameras:", err);
+			return null;
+		}
+	}, []);
 
 	useEffect(() => {
 		return () => {
