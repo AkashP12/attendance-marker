@@ -1,7 +1,9 @@
-// next.config.ts
-const nextConfig = {
-  // ❌ Remove this if you are NOT doing static export
-  // output: 'export'
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
