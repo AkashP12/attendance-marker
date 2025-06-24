@@ -1,15 +1,9 @@
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useHtml5Qrcode } from '@/hooks/useQRCodeScanner';
-
-interface CameraDevice {
-  id: string;
-  label: string;
-}
 
 const sessionOptions = [
   'Day 1 First Session',
@@ -24,122 +18,61 @@ const sessionOptions = [
 
 export default function QRScannerPage() {
   const [selectedSession, setSelectedSession] = useState('Day 1 First Session');
-  //const [scanResult, setScanResult] = useState<string | null>(null);
-  const setDevices = useState<CameraDevice[]>([])[1];
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
 
   const {
     listCameras,
     startCameraScan,
     stopCameraScan,
-    scanFile,
     isScanning,
   } = useHtml5Qrcode({
     elementId: 'qr-reader',
     fps: 10,
     qrbox: { width: 250, height: 250 },
-    event: selectedSession, // ✅ dynamically updated
+    event: selectedSession,
     // onScanSuccess: (decodedText) => {
-    //   setScanResult(`Welcome Rtr. ${decodedText} for ${selectedSession}`);
+    //   console.log(`Scanned: ${decodedText}`);
     // },
   });
 
-  // useEffect(() => {
-  //   async function fetchDevicesAndStart() {
-  //     try {
-  //       const cams = await listCameras();
-  //       setDevices(cams.map((c) => ({ id: c.deviceId, label: c.label || c.deviceId })));
-
-  //       if (cams.length > 0) {
-  //         setSelectedDeviceId(cams[0].deviceId);
-  //         await startCameraScan(cams[0].deviceId);
-  //       }
-  //     } catch (err) {
-  //       console.error('Failed to init camera', err);
-  //     }
-  //   }
-
-  //   fetchDevicesAndStart();
-  //   return () => {
-  //     stopCameraScan();
-  //   };
-  // }, []);
   useEffect(() => {
     async function fetchDevices() {
       try {
         const cams = await listCameras();
-        //setDevices(cams.map((c) => ({ id: c.deviceId, label: c.label || c.deviceId })));
-  
         if (cams.length > 0) {
           setSelectedDeviceId(cams[0].deviceId);
-          // ⛔ Don't auto-start scanning here anymore
         }
       } catch (err) {
         console.error('Failed to list cameras', err);
       }
     }
-  
+
     fetchDevices();
-  
-    // ⛔ Only clean up on unmount
+
     return () => {
       stopCameraScan();
     };
   }, [listCameras, stopCameraScan]);
-  
-  
 
-//   const handleStart = async () => {
-//   if (selectedDeviceId) {
-//     await startCameraScan(selectedDeviceId);
-//   }
-// };
-
-    // const handleStart = async () => {
-    //   if (selectedDeviceId) {
-    //     await startCameraScan(selectedDeviceId);
-    //   }
-    // };
-
-    const handleStop = async () => {
-      try {
-        if (isScanning) {
-          await stopCameraScan();
-        }
-      } catch (err) {
-        console.error("Failed to stop camera scan:", err);
+  const handleStop = async () => {
+    try {
+      if (isScanning) {
+        await stopCameraScan();
       }
-    };
-    
-    const handleStart = async () => {
-      try {
-        if (selectedDeviceId && !isScanning) {
-          await startCameraScan(selectedDeviceId);
-        }
-      } catch (err) {
-        console.error("Failed to start camera scan again:", err);
+    } catch (err) {
+      console.error("Failed to stop camera scan:", err);
+    }
+  };
+
+  const handleStart = async () => {
+    try {
+      if (selectedDeviceId && !isScanning) {
+        await startCameraScan(selectedDeviceId);
       }
-    };
-    
-
-
-
-  // const handleUploadQR = () => {
-  //   const fileInput = document.createElement('input');
-  //   fileInput.type = 'file';
-  //   fileInput.accept = 'image/*';
-  //   fileInput.onchange = async () => {
-  //     if (fileInput.files?.[0]) {
-  //       try {
-  //         const result = await scanFile(fileInput.files[0]);
-  //         // setScanResult(`Welcome Rtr. ${result} for ${selectedSession}`);
-  //       } catch (err) {
-  //         alert('QR scan failed: ' + err);
-  //       }
-  //     }
-  //   };
-  //   fileInput.click();
-  // };
+    } catch (err) {
+      console.error("Failed to start camera scan again:", err);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
@@ -179,34 +112,13 @@ export default function QRScannerPage() {
             </div>
 
             {/* Controls */}
-            {/* <div className="flex justify-center gap-2 mt-2">
-              <Button onClick={handleStop} disabled={!isScanning}>
-                Stop Scan
-              </Button>
-              
-            </div> */}
-            {/* Controls */}
-            {/* Controls */}
             <div className="flex justify-center gap-2 mt-2">
               {isScanning ? (
-                <Button onClick={handleStop}>
-                  Stop Scan
-                </Button>
+                <Button onClick={handleStop}>Stop Scan</Button>
               ) : (
-                <Button onClick={handleStart}>
-                  Start Scan
-                </Button>
+                <Button onClick={handleStart}>Start Scan</Button>
               )}
             </div>
-
-
-
-
-            {/* {scanResult && (
-              <Card className="bg-green-50 text-center p-3 border border-green-500 mt-4">
-                <p className="text-green-800 font-semibold">{scanResult}</p>
-              </Card>
-            )} */}
           </Card>
         </div>
       </main>
@@ -217,4 +129,3 @@ export default function QRScannerPage() {
     </div>
   );
 }
-
