@@ -1,14 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  output: 'export', // ✅ tells Next.js to statically export
-  distDir: 'out',   // ✅ where to output the files
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  images: {
-    unoptimized: true,
-  },
+// next.config.ts
+const nextConfig = {
+  // ❌ Remove this if you are NOT doing static export
+  // output: 'export'
 };
 
 export default nextConfig;
