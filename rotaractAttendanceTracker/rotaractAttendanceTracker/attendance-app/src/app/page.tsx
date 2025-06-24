@@ -24,8 +24,8 @@ const sessionOptions = [
 
 export default function QRScannerPage() {
   const [selectedSession, setSelectedSession] = useState('Day 1 First Session');
-  const [scanResult, setScanResult] = useState<string | null>(null);
-  const [devices, setDevices] = useState<CameraDevice[]>([]);
+  //const [scanResult, setScanResult] = useState<string | null>(null);
+  const setDevices = useState<CameraDevice[]>([])[1];
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
 
   const {
@@ -68,7 +68,7 @@ export default function QRScannerPage() {
     async function fetchDevices() {
       try {
         const cams = await listCameras();
-        setDevices(cams.map((c) => ({ id: c.deviceId, label: c.label || c.deviceId })));
+        //setDevices(cams.map((c) => ({ id: c.deviceId, label: c.label || c.deviceId })));
   
         if (cams.length > 0) {
           setSelectedDeviceId(cams[0].deviceId);
@@ -124,22 +124,22 @@ export default function QRScannerPage() {
 
 
 
-  const handleUploadQR = () => {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = async () => {
-      if (fileInput.files?.[0]) {
-        try {
-          const result = await scanFile(fileInput.files[0]);
-          // setScanResult(`Welcome Rtr. ${result} for ${selectedSession}`);
-        } catch (err) {
-          alert('QR scan failed: ' + err);
-        }
-      }
-    };
-    fileInput.click();
-  };
+  // const handleUploadQR = () => {
+  //   const fileInput = document.createElement('input');
+  //   fileInput.type = 'file';
+  //   fileInput.accept = 'image/*';
+  //   fileInput.onchange = async () => {
+  //     if (fileInput.files?.[0]) {
+  //       try {
+  //         const result = await scanFile(fileInput.files[0]);
+  //         // setScanResult(`Welcome Rtr. ${result} for ${selectedSession}`);
+  //       } catch (err) {
+  //         alert('QR scan failed: ' + err);
+  //       }
+  //     }
+  //   };
+  //   fileInput.click();
+  // };
 
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
@@ -202,11 +202,11 @@ export default function QRScannerPage() {
 
 
 
-            {scanResult && (
+            {/* {scanResult && (
               <Card className="bg-green-50 text-center p-3 border border-green-500 mt-4">
                 <p className="text-green-800 font-semibold">{scanResult}</p>
               </Card>
-            )}
+            )} */}
           </Card>
         </div>
       </main>
