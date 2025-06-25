@@ -27,7 +27,7 @@ type Attendance struct {
 var attendanceCollection *mongo.Collection
 
 func main() {
-
+	//
 	err := InitializeDbConnection()
 	if err != nil {
 		fmt.Print("Server crash. Failed to connect to the database: ", err.Error())
