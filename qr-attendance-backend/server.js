@@ -5,6 +5,8 @@ const cors = require('cors');
 const Attendance = require('./models/Attendance');
 
 dotenv.config();
+console.log('🔐 MONGO_URI:', process.env.MONGO_URI);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
