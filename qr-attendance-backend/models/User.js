@@ -1,0 +1,40 @@
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  mobile: {
+    type: String,
+    required: true
+  },
+  clubName: {
+    type: String,
+    required: true
+  },
+  uniqueKey: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  attendedAARA: {
+    type: Boolean,
+    default: false
+  },
+  attendanceTimestamp: {
+    type: Date,
+    default: null
+  }
+}, {
+  versionKey: false,
+  timestamps: true
+});
+
+userSchema.index({ uniqueKey: 1 }, { unique: true });
+
+module.exports = mongoose.model('User', userSchema, 'aara_attendance'); 
