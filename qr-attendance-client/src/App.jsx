@@ -18,11 +18,12 @@ function App() {
           rawData: data.text,
         });
         alert(res.data.message);
+        setScanResult(`✅ ${res.data.message}`);
       } catch (err) {
         const msg = err.response?.data?.message || '❌ Error scanning';
         setScanResult(`❌ ${msg}`);
-        setTimeout(() => setScanResult(''), 5000); // auto-clear in 5 seconds
         alert(msg);
+        setTimeout(() => setScanResult(''), 5000); // auto-clear in 5 seconds
       }
     }
   };
@@ -51,14 +52,4 @@ function App() {
         )}
 
         <div className="button-group">
-          <button onClick={() => setScanning(true)} disabled={scanning}>Start Scan</button>
-          <button onClick={() => setScanning(false)} disabled={!scanning}>Stop Scan</button>
-        </div>
-
-        <p className={`scan-status ${scanResult.includes('❌') ? 'error' : ''}`}>{scanResult}</p>
-      </div>
-    </div>
-  );
-}
-
-export default App;
+          <button onClick={() => setScanning(true)} disabled
