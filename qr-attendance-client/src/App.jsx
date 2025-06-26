@@ -42,11 +42,15 @@ function App() {
 
         {scanning ? (
           <QrScanner
-            delay={300}
-            onScan={handleScan}
-            onError={handleError}
-            style={{ width: '100%' }}
-          />
+          delay={300}
+          onScan={handleScan}
+          onError={handleError}
+          style={{ width: '100%' }}
+          constraints={{
+            video: { facingMode: { exact: 'environment' } }
+          }}
+        />
+        
         ) : (
           <div className="camera-placeholder">Camera Off</div>
         )}
