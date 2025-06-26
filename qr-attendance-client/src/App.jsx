@@ -52,4 +52,14 @@ function App() {
         )}
 
         <div className="button-group">
-          <button onClick={() => setScanning(true)} disabled
+          <button onClick={() => setScanning(true)} disabled={scanning}>Start Scan</button>
+          <button onClick={() => setScanning(false)} disabled={!scanning}>Stop Scan</button>
+        </div>
+
+        <p className={`scan-status ${scanResult.includes('❌') ? 'error' : ''}`}>{scanResult}</p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
