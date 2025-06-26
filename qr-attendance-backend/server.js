@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const Attendance = require('./models/Attendance');
+const User = require('./models/User');
 
 dotenv.config();
 console.log('🔐 MONGO_URI:', process.env.MONGO_URI);
@@ -15,38 +15,69 @@ app.use(cors());
 app.use(express.json());
 
 // Connect MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
+mongoose.connect(process.env.MONGO_URI, {
+  dbName: 'rotaract' // Specify the database name
+})
+  .then(() => console.log('✅ MongoDB connected to rotaract database'))
   .catch((err) => console.error('❌ MongoDB error:', err));
 
-// API Route to handle QR scans
+// API Route to handle QR scans and fetch user details
 app.post('/api/scan', async (req, res) => {
-  const { rawData } = req.body;
+  const { uniqueKey } = req.body;
 
-  if (!rawData) return res.status(400).json({ message: 'No QR data provided' });
+  if (!uniqueKey) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'Invalid QR. Please check the QR or register manually.' 
+    });
+  }
 
-  const userId = rawData.trim();
+  const trimmedKey = uniqueKey.trim();
 
-  if (!userId) {
-    return res.status(400).json({ message: 'Invalid QR data' });
+  if (!trimmedKey) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'Invalid QR. Please check the QR or register manually.' 
+    });
   }
 
   try {
-    // Check if attendance already exists
-    const existing = await Attendance.findOne({ userId });
-    if (existing) {
-      return res.status(409).json({ message: `Attendance already marked` });
+    // Find user by unique key
+    const user = await User.findOne({ uniqueKey: trimmedKey });
+    
+    if (!user) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'No matching user found. Please register manually as user is not registered.',
+      });
     }
 
-    const newEntry = new Attendance({ userId, name: userId }); // name = userId as placeholder
-    await newEntry.save();
+    // Check if user has already attended
+    if (user.attendedAARA) {
+      return res.status(409).json({ 
+        success: false,
+        message: `Attendance is already marked for ${user.name}`,        
+      });
+    }
 
-    return res.json({ message: `✅ Attendance marked` });
+    // Mark attendance
+    user.attendedAARA = true;
+    user.attendanceTimestamp = new Date();
+    await user.save();
+
+    return res.json({ 
+      message: `Attendance marked for ${user.name}`,        
+    });
+
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error('Error processing attendance:', error);
+    return res.status(500).json({ 
+      success: false,
+      message: 'Server error occurred while processing attendance. Please contact Team IT.' 
+    });
   }
 });
+
 
 // Start Server
 app.listen(PORT, () => {
