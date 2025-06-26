@@ -4,11 +4,15 @@ body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #f0f4f8;
+  min-height: 100vh;
 }
 
 .container {
   text-align: center;
   padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
@@ -22,6 +26,7 @@ h1 {
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  flex: 1;
 }
 
 .camera-placeholder {
@@ -59,5 +64,50 @@ h1 {
 
 .scan-status.success {
   color: #27ae60; /* green */
+}
+
+.footer {
+  margin-top: auto;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  margin-top: 2rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.footer p::before {
+  content: '💻';
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.footer p::after {
+  content: '🚀';
+  margin-left: 8px;
+  font-size: 1.2rem;
 }
 

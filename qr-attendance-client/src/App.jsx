@@ -35,10 +35,10 @@ function App() {
 
   return (
     <div className="container">
-      <h1>🎯 QR Attendance Marker</h1>
+      <h1>AARA Attendance Marker</h1>
 
       <div className="card">
-        <h2>📷 Camera Scanner</h2>
+        <h2>Place the QR in front of the camera</h2>
 
         {scanning ? (
           <QrScanner
@@ -61,7 +61,11 @@ function App() {
         </div>
 
         <p className={`scan-status ${scanResult.includes('❌') ? 'error' : ''}`}>{scanResult}</p>
-      </div>
+      </div>  
+
+      <footer className="footer">
+        <p>An initiative by Team IT 2025-26</p>
+      </footer>
     </div>
   );
 }
