@@ -11,18 +11,18 @@ function App() {
     if (data?.text) {
       setScanning(false);
       setScanResult(`✅ Scanned: ${data.text}`);
-      setTimeout(() => setScanResult(''), 5000); // 👈 auto-clear in 5 seconds
-      
+      setTimeout(() => setScanResult(''), 5000); // auto-clear in 5 seconds
+
       try {
-        const res = await axios.post('http://localhost:5000/api/scan', {
+        const res = await axios.post('https://attendance-marker-vwvg.onrender.com/api/scan', {
           rawData: data.text,
         });
         alert(res.data.message);
       } catch (err) {
-        
         const msg = err.response?.data?.message || '❌ Error scanning';
-        setTimeout(() => setScanResult(''), 5000); // 👈 auto-clear in 5 seconds
-        alert(msg);      
+        setScanResult(`❌ ${msg}`);
+        setTimeout(() => setScanResult(''), 5000); // auto-clear in 5 seconds
+        alert(msg);
       }
     }
   };
@@ -56,7 +56,7 @@ function App() {
         </div>
 
         <p className={`scan-status ${scanResult.includes('❌') ? 'error' : ''}`}>{scanResult}</p>
-        </div>
+      </div>
     </div>
   );
 }
