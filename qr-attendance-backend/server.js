@@ -15,12 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 // Connect MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ MongoDB connected'))
-.catch((err) => console.error('❌ MongoDB error:', err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch((err) => console.error('❌ MongoDB error:', err));
 
 // API Route to handle QR scans
 app.post('/api/scan', async (req, res) => {
@@ -28,23 +25,23 @@ app.post('/api/scan', async (req, res) => {
 
   if (!rawData) return res.status(400).json({ message: 'No QR data provided' });
 
-  const [userId, name] = rawData.split('|').map(x => x.trim());
+  const userId = rawData.trim();
 
-  if (!userId || !name) {
-    return res.status(400).json({ message: 'Invalid QR format. Use "ID|Name"' });
+  if (!userId) {
+    return res.status(400).json({ message: 'Invalid QR data' });
   }
 
   try {
-    // Avoid duplicate entries
+    // Check if attendance already exists
     const existing = await Attendance.findOne({ userId });
     if (existing) {
-      return res.status(409).json({ message: `Attendance already marked for ${existing.name}` });
+      return res.status(409).json({ message: `Attendance already marked` });
     }
 
-    const newEntry = new Attendance({ userId, name });
+    const newEntry = new Attendance({ userId, name: userId }); // name = userId as placeholder
     await newEntry.save();
 
-    return res.json({ message: `✅ Attendance marked for ${name}` });
+    return res.json({ message: `✅ Attendance marked` });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Server error' });
