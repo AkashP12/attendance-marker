@@ -6,6 +6,8 @@ import './App.css';
 function App() {
   const [scanResult, setScanResult] = useState('');
   const [scanning, setScanning] = useState(false);
+  const [cameraError, setCameraError] = useState('');
+  const [cameraMode, setCameraMode] = useState('environment'); // 'environment' or 'user'
 
   const handleScan = async (data) => {
     if (data?.text) {
@@ -15,7 +17,7 @@ function App() {
 
       try {
         const res = await axios.post('https://attendance-marker-vwvg.onrender.com/api/scan', {
-          rawData: data.text,
+          uniqueKey: data.text,
         });
         alert(res.data.message);
         setScanResult(`✅ ${res.data.message}`);
