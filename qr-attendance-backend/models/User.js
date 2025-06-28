@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
   },
   mobile: {
     type: String,
-    required: true
   },
   clubName: {
     type: String,
@@ -26,10 +25,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  attendanceTimestamp: {
-    type: Date,
-    default: null
-  }
 }, {
   versionKey: false,
   timestamps: true

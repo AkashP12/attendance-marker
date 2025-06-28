@@ -10,7 +10,6 @@ console.log('🔐 MONGO_URI:', process.env.MONGO_URI);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -21,7 +20,6 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('✅ MongoDB connected to rotaract database'))
   .catch((err) => console.error('❌ MongoDB error:', err));
 
-// API Route to handle QR scans and fetch user details
 app.post('/api/scan', async (req, res) => {
   const { uniqueKey } = req.body;
 
@@ -35,18 +33,21 @@ app.post('/api/scan', async (req, res) => {
   const trimmedKey = uniqueKey.trim();
 
   if (!trimmedKey) {
-    return res.status(400).json({ 
+    return res.status(500).json({ 
       success: false,
       message: 'Invalid QR. Please check the QR or register manually.' 
     });
   }
 
   try {
-    // Find user by unique key
-    const user = await User.findOne({ uniqueKey: trimmedKey });
+    // Use projection to fetch only needed fieldxs for attendance check
+    const user = await User.findOne(
+      { uniqueKey: trimmedKey },
+      'name attendedAARA' // Need name for response message
+    );
     
     if (!user) {
-      return res.status(404).json({ 
+      return res.status(500).json({ 
         success: false,
         message: 'No matching user found. Please register manually as user is not registered.',
       });
@@ -54,18 +55,24 @@ app.post('/api/scan', async (req, res) => {
 
     // Check if user has already attended
     if (user.attendedAARA) {
-      return res.status(409).json({ 
+      return res.status(400).json({ 
         success: false,
         message: `Attendance is already marked for ${user.name}`,        
       });
     }
 
-    // Mark attendance
-    user.attendedAARA = true;
-    user.attendanceTimestamp = new Date();
-    await user.save();
+    await User.findOneAndUpdate(
+      { uniqueKey: trimmedKey },
+      { 
+        $set: {
+          attendedAARA: true,
+          attendanceTimestamp: new Date()
+        }
+      }
+    );
 
-    return res.json({ 
+    return res.status(200).json({ 
+      success: true,
       message: `Attendance marked for ${user.name}`,        
     });
 
