@@ -7,21 +7,21 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    // required: true
   },
   mobile: {
     type: String,
   },
-  clubName: {
-    type: String,
-    required: true
-  },
+  // clubName: {
+  //   type: String,
+  //   required: true
+  // },
   uniqueKey: {
     type: String,
     required: true,
     unique: true
   },
-  attendedAARA: {
+  attendedDTS: {
     type: Boolean,
     default: false
   },
@@ -32,4 +32,4 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index({ uniqueKey: 1 }, { unique: true });
 
-module.exports = mongoose.model('User', userSchema, 'aara_attendance'); 
+module.exports = mongoose.model('User', userSchema, 'dts'); 

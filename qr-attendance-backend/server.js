@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect MongoDB
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect("mongodb+srv://ayushjain1141:ES7cSXJ7J6gXdPGd@cluster0.szyqg71.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
   dbName: 'rotaract' // Specify the database name
 })
   .then(() => console.log('✅ MongoDB connected to rotaract database'))
@@ -43,7 +43,7 @@ app.post('/api/scan', async (req, res) => {
     // Use projection to fetch only needed fieldxs for attendance check
     const user = await User.findOne(
       { uniqueKey: trimmedKey },
-      'name attendedAARA' // Need name for response message
+      'name attendedDTS' // Need name for response message
     );
     
     if (!user) {
@@ -54,7 +54,7 @@ app.post('/api/scan', async (req, res) => {
     }
 
     // Check if user has already attended
-    if (user.attendedAARA) {
+    if (user.attendedDTS) {
       return res.status(400).json({ 
         success: false,
         message: `Attendance is already marked for ${user.name}`,        
@@ -65,7 +65,7 @@ app.post('/api/scan', async (req, res) => {
       { uniqueKey: trimmedKey },
       { 
         $set: {
-          attendedAARA: true,
+          attendedDTS: true,
           attendanceTimestamp: new Date()
         }
       }
