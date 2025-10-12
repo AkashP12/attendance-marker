@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect MongoDB
-mongoose.connect("mongodb+srv://ayushjain1141:ES7cSXJ7J6gXdPGd@cluster0.szyqg71.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+mongoose.connect("mongodb+srv://ayushjain1141:rECmappD1r9YYyjG@cluster0.szyqg71.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
   dbName: 'rotaract' // Specify the database name
 })
   .then(() => console.log('✅ MongoDB connected to rotaract database'))
@@ -43,7 +43,7 @@ app.post('/api/scan', async (req, res) => {
     // Use projection to fetch only needed fieldxs for attendance check
     const user = await User.findOne(
       { uniqueKey: trimmedKey },
-      'name attendedDTS' // Need name for response message
+      'name attendedNEXT' // Need name for response message
     );
     
     if (!user) {

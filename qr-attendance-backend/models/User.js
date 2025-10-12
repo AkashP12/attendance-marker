@@ -5,13 +5,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    // required: true
-  },
-  mobile: {
-    type: String,
-  },
+  // email: {
+  //   type: String,
+  //   // required: true
+  // },
+  // mobile: {
+  //   type: String,
+  // },
   // clubName: {
   //   type: String,
   //   required: true
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  attendedDTS: {
+  attendedNEXT: {
     type: Boolean,
     default: false
   },
