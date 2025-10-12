@@ -54,7 +54,7 @@ app.post('/api/scan', async (req, res) => {
     }
 
     // Check if user has already attended
-    if (user.attendedDTS) {
+    if (user.attendedNEXT) {
       return res.status(400).json({ 
         success: false,
         message: `Attendance is already marked for ${user.name}`,        
@@ -65,7 +65,7 @@ app.post('/api/scan', async (req, res) => {
       { uniqueKey: trimmedKey },
       { 
         $set: {
-          attendedDTS: true,
+          attendedNEXT: true,
           attendanceTimestamp: new Date()
         }
       }
