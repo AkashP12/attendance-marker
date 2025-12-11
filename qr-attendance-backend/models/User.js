@@ -21,11 +21,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-    attendedRISEDay1: {
+    attendedRiseDay1: {
       type: Boolean,
       default: false
     },
-    attendedRISEDay2: {
+    attendedRiseDay2: {
       type: Boolean,
       default: false
     },
