@@ -12,19 +12,23 @@ const userSchema = new mongoose.Schema({
   // mobile: {
   //   type: String,
   // },
-  // clubName: {
-  //   type: String,
-  //   required: true
-  // },
+  clubName: {
+    type: String,
+    required: false
+  },
   uniqueKey: {
     type: String,
     required: true,
     unique: true
   },
-  attendedNEXT: {
-    type: Boolean,
-    default: false
-  },
+    attendedRISEDay1: {
+      type: Boolean,
+      default: false
+    },
+    attendedRISEDay2: {
+      type: Boolean,
+      default: false
+    },
 }, {
   versionKey: false,
   timestamps: true
@@ -32,4 +36,4 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index({ uniqueKey: 1 }, { unique: true });
 
-module.exports = mongoose.model('User', userSchema, 'next'); 
+module.exports = mongoose.model('User', userSchema, 'rise'); 

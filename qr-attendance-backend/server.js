@@ -40,10 +40,24 @@ app.post('/api/scan', async (req, res) => {
   }
 
   try {
-    // Use projection to fetch only needed fieldxs for attendance check
+    // Get current date in IST (Indian Standard Time - UTC+5:30)
+    const now = new Date();
+    // Convert to IST timezone using Asia/Kolkata
+    const istFormatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Kolkata',
+      day: 'numeric'
+    });
+    const dayOfMonth = parseInt(istFormatter.format(now), 10);
+    const is13th = dayOfMonth === 12;
+    
+    // Determine which field to check and update based on date
+    const attendanceField = is13th ? 'attendedRISEDay1' : 'attendedRISEDay2';
+    const dayLabel = is13th ? 'RISE Day 1' : 'RISE Day 2';
+    
+    // Use projection to fetch only needed fields for attendance check
     const user = await User.findOne(
       { uniqueKey: trimmedKey },
-      'name attendedNEXT' // Need name for response message
+      `name ${attendanceField}` // Dynamically select the correct field
     );
     
     if (!user) {
@@ -53,27 +67,27 @@ app.post('/api/scan', async (req, res) => {
       });
     }
 
-    // Check if user has already attended
-    if (user.attendedNEXT) {
+    // Check if user has already attended for the current day
+    if (user[attendanceField]) {
       return res.status(400).json({ 
         success: false,
-        message: `Attendance is already marked for ${user.name}`,        
+        message: `Attendance for ${dayLabel} is already marked for ${user.name}`,        
       });
     }
 
+    // Mark attendance for the appropriate day
     await User.findOneAndUpdate(
       { uniqueKey: trimmedKey },
       { 
         $set: {
-          attendedNEXT: true,
-          attendanceTimestamp: new Date()
+          [attendanceField]: true,
         }
       }
     );
 
     return res.status(200).json({ 
       success: true,
-      message: `Attendance marked for ${user.name}`,        
+      message: `${dayLabel} attendance marked for ${user.name}`,        
     });
 
   } catch (error) {
