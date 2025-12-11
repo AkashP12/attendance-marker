@@ -48,7 +48,7 @@ app.post('/api/scan', async (req, res) => {
       day: 'numeric'
     });
     const dayOfMonth = parseInt(istFormatter.format(now), 10);
-    const is13th = dayOfMonth === 11;
+    const is13th = dayOfMonth === 13;
     
     // Determine which field to check and update based on date
     const attendanceField = is13th ? 'attendedRiseDay1' : 'attendedRiseDay2';
