@@ -48,11 +48,11 @@ app.post('/api/scan', async (req, res) => {
       day: 'numeric'
     });
     const dayOfMonth = parseInt(istFormatter.format(now), 10);
-    const is13th = dayOfMonth === 13;
+    const is14th = dayOfMonth === 14;
     
     // Determine which field to check and update based on date
-    const attendanceField = is13th ? 'attendedRiseDay1' : 'attendedRiseDay2';
-    const dayLabel = is13th ? 'RISE Day 1' : 'RISE Day 2';
+    const attendanceField = is14th ? 'attendedREDDay1' : 'attendedREDDay2';
+    const dayLabel = is14th ? 'RED Day 1' : 'RED Day 2';
     
     // Use projection to fetch only needed fields for attendance check
     const user = await User.findOne(
