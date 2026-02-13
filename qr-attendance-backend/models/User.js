@@ -36,4 +36,4 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index({ uniqueKey: 1 }, { unique: true });
 
-module.exports = mongoose.model('User', userSchema, 'rise'); 
+module.exports = mongoose.model('User', userSchema, 'red'); 
