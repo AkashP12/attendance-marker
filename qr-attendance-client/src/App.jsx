@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>RED 25-26</h1>
+      <h1>ASSEMBLY & AARA 26</h1>
 
       <div className="card">
         <h2>Place the QR in front of the camera</h2>

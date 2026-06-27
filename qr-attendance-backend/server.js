@@ -40,24 +40,10 @@ app.post('/api/scan', async (req, res) => {
   }
 
   try {
-    // Get current date in IST (Indian Standard Time - UTC+5:30)
-    const now = new Date();
-    // Convert to IST timezone using Asia/Kolkata
-    const istFormatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'Asia/Kolkata',
-      day: 'numeric'
-    });
-    const dayOfMonth = parseInt(istFormatter.format(now), 10);
-    const is14th = dayOfMonth === 14;
-    
-    // Determine which field to check and update based on date
-    const attendanceField = is14th ? 'attendedREDDay1' : 'attendedREDDay2';
-    const dayLabel = is14th ? 'RED Day 1' : 'RED Day 2';
     
     // Use projection to fetch only needed fields for attendance check
     const user = await User.findOne(
       { uniqueKey: trimmedKey },
-      `name ${attendanceField}` // Dynamically select the correct field
     );
     
     if (!user) {
@@ -71,7 +57,7 @@ app.post('/api/scan', async (req, res) => {
     if (user[attendanceField]) {
       return res.status(400).json({ 
         success: false,
-        message: `Attendance for ${dayLabel} is already marked for ${user.name}`,        
+        message: `Attendance is already marked for ${user.name}`,        
       });
     }
 
@@ -80,14 +66,14 @@ app.post('/api/scan', async (req, res) => {
       { uniqueKey: trimmedKey },
       { 
         $set: {
-          [attendanceField]: true,
+          attended: true,
         }
       }
     );
 
     return res.status(200).json({ 
       success: true,
-      message: `${dayLabel} attendance marked for ${user.name}`,        
+      message: `Attendance marked for ${user.name}`,        
     });
 
   } catch (error) {

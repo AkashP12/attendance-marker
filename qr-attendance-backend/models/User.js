@@ -21,11 +21,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-    attendedREDDay1: {
-      type: Boolean,
-      default: false
-    },
-    attendedREDDay2: {
+  attended: {
       type: Boolean,
       default: false
     },
@@ -36,4 +32,4 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index({ uniqueKey: 1 }, { unique: true });
 
-module.exports = mongoose.model('User', userSchema, 'red'); 
+module.exports = mongoose.model('User', userSchema, 'aara_26'); 
