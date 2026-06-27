@@ -53,8 +53,8 @@ app.post('/api/scan', async (req, res) => {
       });
     }
 
-    // Check if user has already attended for the current day
-    if (user[attended]) {
+    // Check if user has already attended
+    if (user.attended) {
       return res.status(400).json({ 
         success: false,
         message: `Attendance is already marked for ${user.name}`,        
